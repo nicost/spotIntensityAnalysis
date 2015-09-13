@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>edu.ucsf.valelab.spotanalysis</groupId>
+  <artifactId>spotAnalysis_</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>spotIntensityAnalysis</name>
+  <url>http://valelab.ucsf.edu/~nico/ijplugins</url>
+  <description>An ImageJ/Fiji plugin to analyze intensities of single molecule spots in time-lapse series</description>
+  <properties>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+	<repositories>
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<parent>
+		<groupId>net.imagej</groupId>
+		<artifactId>pom-imagej</artifactId>
+		<version>9.2.0</version>
+		<relativePath />
+	</parent>
+
+  <build>
+     <plugins>
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-compiler-plugin</artifactId>
+           <version>3.3</version>
+           <configuration>
+              <source>1.6</source>
+              <target>1.6</target>
+              <downloadSources>true</downloadSources>
+              <downloadJavadocs>true</downloadJavadocs>
+           </configuration>
+        </plugin>
+     </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+     <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-math3</artifactId>
+         <version>3.5</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jfree</groupId>
+         <artifactId>jfreechart</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jfree</groupId>
+         <artifactId>jcommon</artifactId>
+      </dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej</artifactId>
+      </dependency>
+      
+  </dependencies>
+</project>
