@@ -20,9 +20,15 @@
  
 package edu.ucsf.valelab.spotintensityanalysis;
 
-import edu.ucsf.valelab.spotintensityanalysis.algorithm.StackUtils;
+import edu.ucsf.valelab.spotintensityanalysis.algorithm.FindLocalMaxima;
+import edu.ucsf.valelab.spotintensityanalysis.algorithm.Utils;
+import edu.ucsf.valelab.spotintensityanalysis.data.SpotIntensityParameters;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.gui.GenericDialog;
+import ij.gui.Overlay;
+import java.awt.Color;
+import java.awt.Polygon;
 
 /**
  *
@@ -30,11 +36,14 @@ import ij.ImageStack;
  */
 public class RunAnalysis extends Thread {
    final ImagePlus iPlus_;
-   final int nrImagesToAverage_;
+   final SpotIntensityParameters parms_;
+   final GenericDialog gd_;
    
-   public RunAnalysis(ImagePlus iPlus, int nrImagesToAverage){
+   public RunAnalysis(ImagePlus iPlus,  
+           SpotIntensityParameters parms, GenericDialog gd){
       iPlus_ = iPlus;
-      nrImagesToAverage_ = nrImagesToAverage;
+      parms_ = parms;
+      gd_ = gd;
    }
    
    @Override
@@ -44,12 +53,19 @@ public class RunAnalysis extends Thread {
       final int width = iPlus_.getWidth();
       final int height = iPlus_.getHeight();
       
-      final ImageStack firstImagesStack = is.crop(0, 0, 0, width, height, nrImagesToAverage_);
+      final ImageStack firstImagesStack = is.crop(0, 0, 0, width, height, 
+              parms_.nFrames_);
       ImagePlus ip = new ImagePlus("tmp", firstImagesStack);
       ip.copyScale(iPlus_);
-      ImagePlus avgImP = StackUtils.Average(ip);
+      ImagePlus avgImP = Utils.Average(ip);
       
-      avgImP.show();
+      Polygon maxima = FindLocalMaxima.FindMax(avgImP.getProcessor(), 
+              parms_.radius_, parms_.noiseTolerance_, 
+              FindLocalMaxima.FilterType.NONE);
+      
+      Overlay ovl = Utils.GetSpotOverlay(maxima, parms_.radius_, Color.red);
+      
+      iPlus_.setOverlay(ovl);
       
    }
    

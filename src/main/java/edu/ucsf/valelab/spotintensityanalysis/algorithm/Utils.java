@@ -22,26 +22,30 @@ package edu.ucsf.valelab.spotintensityanalysis.algorithm;
 
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.gui.Overlay;
+import ij.gui.Roi;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
+import java.awt.Color;
+import java.awt.Polygon;
 
 /**
  *
  * @author nico
  */
-public class StackUtils {
+public class Utils {
    
    public static ImagePlus Average(ImagePlus inPlus) {
       ImageStack stack = inPlus.getImageStack();
       // TODO: return error when the stack does not contain shortProcessors
-      ImageProcessor ip = stack.getProcessor(0);
+      ImageProcessor ip = stack.getProcessor(1);
       final int width = ip.getWidth();
       final int height = ip.getHeight();
       final int dimension = width * height;
       
       long[] summedPixels = new long[dimension];
       
-      for (int n = 0; n < stack.getSize(); n++) {
+      for (int n = 1; n <= stack.getSize(); n++) {
          ip = stack.getProcessor(n);
          short[] pixels = (short[]) ip.getPixels();
          for (int i = 0; i < dimension; i++) {
@@ -49,15 +53,31 @@ public class StackUtils {
          }
       }
       
+      short[] averagedPixels = new short[dimension];
       for (int i = 0; i < dimension; i++) {
-            summedPixels[i] = summedPixels[i] / stack.getSize();
+            averagedPixels[i] = (short) (summedPixels[i] / stack.getSize());
          }
 
       ImageProcessor outProc = new ShortProcessor(width, height);
-      outProc.setPixels(summedPixels);
+      outProc.setPixels(averagedPixels);
       ImagePlus outPlus = new ImagePlus("Average", outProc);  
       outPlus.copyScale(inPlus);
       
       return outPlus;
+   }
+   
+   public static Overlay GetSpotOverlay (Polygon spots, int radius, 
+           Color symbolColor) {
+      Overlay ov = new Overlay();
+      int diameter = 2 * radius;
+      for (int i = 0; i < spots.npoints; i++) {
+         int x = spots.xpoints[i];
+         int y = spots.ypoints[i];
+         Roi roi = new Roi(x - radius, y - radius, 
+                 diameter, diameter, diameter);
+         roi.setStrokeColor(symbolColor);
+         ov.add(roi);
+      }
+      return ov;
    }
 }
