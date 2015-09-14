@@ -80,4 +80,34 @@ public class Utils {
       }
       return ov;
    }
+   
+   public static long GetIntensity(ImageProcessor ip, int x, int y, int radius) {
+      long results = 0;
+      // use symmetry to avoid too many calculations
+      for (int i = 0; i < radius; i++) {
+         for (int j = 0; j < radius; j++) {
+            if (i == 0 && j == 0) {
+               results += ip.get(x, y);
+            } else {
+               int d = (int) Math.sqrt( (i-radius)*(i-radius) + (j-radius)* (j-radius) );
+               if (d < radius) {
+                  if (i == 0) {
+                     results += ip.get(x, y + j);
+                     results += ip.get(x, y - j);
+                  } else if (j==0) {
+                     results += ip.get(x + i, y);
+                     results += ip.get(x - i, y);
+                  } else {
+                     results += ip.get(x - i, y - j);
+                     results += ip.get(x - i, y + j);
+                     results += ip.get(x + i, y - j);
+                     results += ip.get(x + i, y + j);
+                  }
+               }
+            }
+         }
+      }
+      return results;
+   }
+   
 }

@@ -174,7 +174,8 @@ public class FindLocalMaxima {
                     (iProc.getPixel(mi, mj) - 
                       ( (iProc.getPixel(mi - n , mj - n) + iProc.getPixel(mi -n, mj + n) +
                        iProc.getPixel(mi + n, mj  - n) + iProc.getPixel(mi + n, mj + n)) / 4) ) 
-                    > threshold))
+                    > threshold) &&
+                    mi > n && mi < xEnd && mj > n && mj < yEnd)
                maxima.addPoint(mi, mj);
          }
       }

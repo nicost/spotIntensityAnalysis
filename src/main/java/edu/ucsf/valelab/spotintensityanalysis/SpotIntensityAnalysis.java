@@ -43,7 +43,7 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
       gd.addNumericField("Spot Radius (pixels)", 3, 0);
       gd.addNumericField("Noise tolerance", 500, 0);
       
-      gd.addPreviewCheckbox(null, "Pre-view");
+      gd.addPreviewCheckbox(null, "Preview");
       
       gd.addDialogListener(this);
       
