@@ -51,6 +51,7 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
       
       if (gd.wasOKed()) {
          ij.IJ.log("OK Pressed");
+         
       }
       
    }

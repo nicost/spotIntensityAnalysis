@@ -23,6 +23,7 @@ package edu.ucsf.valelab.spotintensityanalysis;
 import edu.ucsf.valelab.spotintensityanalysis.algorithm.FindLocalMaxima;
 import edu.ucsf.valelab.spotintensityanalysis.algorithm.Utils;
 import edu.ucsf.valelab.spotintensityanalysis.data.SpotIntensityParameters;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.GenericDialog;
@@ -57,9 +58,14 @@ public class RunAnalysis extends Thread {
               parms_.nFrames_);
       ImagePlus ip = new ImagePlus("tmp", firstImagesStack);
       ip.copyScale(iPlus_);
-      ImagePlus avgImP = Utils.Average(ip);
+      ImagePlus avgIP = Utils.Average(ip);
+      ImagePlus backgroundIP = avgIP.duplicate();
+      IJ.run(avgIP,"Subtract Background...",  "rolling=100 create sliding");
+      avgIP.show();
+      backgroundIP.show();
       
-      Polygon maxima = FindLocalMaxima.FindMax(avgImP.getProcessor(), 
+      
+      Polygon maxima = FindLocalMaxima.FindMax(avgIP.getProcessor(), 
               parms_.radius_, parms_.noiseTolerance_, 
               FindLocalMaxima.FilterType.NONE);
       
