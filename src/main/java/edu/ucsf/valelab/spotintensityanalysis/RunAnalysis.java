@@ -28,6 +28,8 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
+import ij.gui.ImageCanvas;
+import ij.gui.ImageWindow;
 import ij.gui.Overlay;
 import ij.measure.ResultsTable;
 import ij.plugin.ImageCalculator;
@@ -125,6 +127,17 @@ public class RunAnalysis extends Thread {
          tp.addKeyListener(myk);
          tp.addMouseListener(myk);
          frame.toFront();
+      }
+      
+      // atach listener to ImageWindow
+      if (iPlus_ != null) {
+         ImageWindow win = iPlus_.getWindow();
+         ImageCanvas canvas = win.getCanvas();
+         for (MouseListener ms : canvas.getMouseListeners())
+            win.removeMouseListener(canvas);
+         ImageWindowListener iwl = new ImageWindowListener(iPlus_, res, 
+               maxima, parms_);
+         canvas.addMouseListener(iwl);
       }
       
    }
