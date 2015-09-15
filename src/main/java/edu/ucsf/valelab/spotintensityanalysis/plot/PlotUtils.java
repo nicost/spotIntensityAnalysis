@@ -55,6 +55,7 @@ public class PlotUtils {
    public final String WINDOWPOSY = "PlotWindowPosY";
    public final String WINDOWWIDTH = "PlotWindowWidth";
    public final String WINDOWHEIGHT = "PlotWindowHeight";
+   MyChartFrame graphFrame_;
    
    private final Preferences prefs_;
    
@@ -112,14 +113,6 @@ public class PlotUtils {
     */
    public Frame plotDataN(String title, XYSeries[] data, String xTitle,
            String yTitle, boolean[] showShapes, String annotation) {
-
-      // Close existing frames
-      Frame[] gfs = ChartFrame.getFrames();
-      for (Frame f : gfs) {
-         if (f.getTitle().equals(title)) {
-            f.dispose();
-         }
-      }
 
       // JFreeChart code
       XYSeriesCollection dataset = new XYSeriesCollection();
@@ -199,19 +192,23 @@ public class PlotUtils {
 
       renderer.setUseFillPaint(true);
 
-      final MyChartFrame graphFrame = new MyChartFrame(title, chart);
-      graphFrame.getChartPanel().setMouseWheelEnabled(true);
-      graphFrame.pack();
-      graphFrame.addWindowListener(new WindowAdapter() {
+      if (graphFrame_ == null)
+         graphFrame_ = new MyChartFrame(title, chart);
+      else
+         graphFrame_.getChartPanel().setChart(chart);
+      graphFrame_.getChartPanel().setMouseWheelEnabled(true);
+      graphFrame_.pack();
+      final MyChartFrame privateFrame = graphFrame_;
+      graphFrame_.addWindowListener(new WindowAdapter() {
          @Override
          public void windowClosing(WindowEvent arg0) {
-            graphFrame.dispose();
+            privateFrame.dispose();
          }
       });
 
-      graphFrame.setVisible(true);
+      graphFrame_.setVisible(true);
 
-      return graphFrame;
+      return graphFrame_;
    }
    
 

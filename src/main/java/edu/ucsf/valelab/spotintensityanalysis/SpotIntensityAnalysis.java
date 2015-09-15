@@ -30,7 +30,7 @@ import java.awt.AWTEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpotIntensityAnalysis implements PlugIn, DialogListener {
-   
+   SpotIntensityParameters parms_;
    
    AtomicBoolean isRunning_ = new AtomicBoolean(false);
    
@@ -47,23 +47,25 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
       
       gd.addDialogListener(this);
       
+      parms_ = getParams(gd);
+      
       gd.showDialog();
       
       if (gd.wasOKed()) {
-         ij.IJ.log("OK Pressed");
-         
+         RunAnalysis ra = new RunAnalysis(ij.IJ.getImage(), parms_, gd);
+         ra.start ();
       }
       
    }
 
    @Override
    public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
-      SpotIntensityParameters parms = getParams(gd);
+      parms_ = getParams(gd);
       if (!gd.isPreviewActive()) {
          ij.IJ.getImage().setOverlay(null);
       } else {
-          RunAnalysis ra = new RunAnalysis(ij.IJ.getImage(), parms, gd);
-          ra.start();
+          RunAnalysis ra = new RunAnalysis(ij.IJ.getImage(), parms_, gd);
+          ra.preview ();
       }
       return true;
    }

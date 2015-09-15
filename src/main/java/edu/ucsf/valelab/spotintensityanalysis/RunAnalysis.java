@@ -147,4 +147,25 @@ public class RunAnalysis extends Thread {
    }
    
    
+   public void preview () {
+      // first calculate the mean of the first n images
+      final ImageStack is = iPlus_.getImageStack();
+      final int width = iPlus_.getWidth();
+      final int height = iPlus_.getHeight();
+      
+      final ImageStack firstImagesStack = is.crop(0, 0, 0, width, height, 
+              parms_.nFrames_);
+      ImagePlus ip = new ImagePlus("tmp", firstImagesStack);
+      ip.copyScale(iPlus_);
+      ImagePlus avgIP = Utils.Average(ip);
+      
+      Polygon maxima = FindLocalMaxima.FindMax(avgIP.getProcessor(), 
+              parms_.radius_, parms_.noiseTolerance_, 
+              FindLocalMaxima.FilterType.NONE);
+      Overlay ovl = Utils.GetSpotOverlay(maxima, parms_.radius_, Color.red);
+      
+      iPlus_.setOverlay(ovl);
+   }
+   
+   
 }

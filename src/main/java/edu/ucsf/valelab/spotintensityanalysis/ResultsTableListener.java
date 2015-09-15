@@ -26,9 +26,9 @@ import org.jfree.data.xy.XYSeries;
  * 
  */
 public class ResultsTableListener implements KeyListener, MouseListener{
-   ImagePlus siPlus_;
-   final ResultsTable res_;
-   final TextWindow win_;
+   private ImagePlus siPlus_;
+   final private ResultsTable res_;
+   final private TextWindow win_;
    final TextPanel tp_; 
    final SpotIntensityParameters parms_;
    final PlotUtils pu_;
@@ -69,7 +69,7 @@ public class ResultsTableListener implements KeyListener, MouseListener{
 
    @Override
    public void mouseReleased(MouseEvent e) {
-      update();
+     // update();
    }
    @Override
    public void mousePressed(MouseEvent e) {}
@@ -117,7 +117,7 @@ public class ResultsTableListener implements KeyListener, MouseListener{
          plots[0] = data;
          pu_.plotDataN("Spot Intensity Profile", plots, "Time (s)",
            "Intensity", showShapes, "");
-         
+         win_.toFront();
       }
    }
 }
