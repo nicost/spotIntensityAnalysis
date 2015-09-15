@@ -77,8 +77,6 @@ public class RunAnalysis extends Thread {
       Overlay ovl = Utils.GetSpotOverlay(maxima, parms_.radius_, Color.red);
       
       iPlus_.setOverlay(ovl);
-      
-      
 
       ResultsTable res = new ResultsTable();
       res.setPrecision(0);
@@ -112,36 +110,36 @@ public class RunAnalysis extends Thread {
       // Attach listener to TextPanel
       Frame frame = WindowManager.getFrame(name);
       if (frame != null && frame instanceof TextWindow) {
-         TextWindow win = (TextWindow) frame;
-         TextPanel tp = win.getTextPanel();
+         TextWindow twin = (TextWindow) frame;
+         TextPanel tp = twin.getTextPanel();
 
-         // TODO: the following does not work, there is some voodoo going on here
          for (MouseListener ms : tp.getMouseListeners()) {
             tp.removeMouseListener(ms);
          }
          for (KeyListener ks : tp.getKeyListeners()) {
             tp.removeKeyListener(ks);
          }
-         
-         ResultsTableListener myk = new ResultsTableListener(iPlus_, res, win, parms_);
+
+         ResultsTableListener myk = new ResultsTableListener(iPlus_, res, twin, parms_);
          tp.addKeyListener(myk);
          tp.addMouseListener(myk);
          frame.toFront();
+
+         // atach listener to ImageWindow
+         if (iPlus_ != null) {
+            ImageWindow iWin = iPlus_.getWindow();
+            ImageCanvas canvas = iWin.getCanvas();
+            for (MouseListener ms : canvas.getMouseListeners()) {
+               twin.removeMouseListener(canvas);
+            }
+            ImageWindowListener iwl = new ImageWindowListener(iPlus_, res, myk, 
+                    twin, maxima);
+            canvas.addMouseListener(iwl);
+         }
       }
-      
-      // atach listener to ImageWindow
-      if (iPlus_ != null) {
-         ImageWindow win = iPlus_.getWindow();
-         ImageCanvas canvas = win.getCanvas();
-         for (MouseListener ms : canvas.getMouseListeners())
-            win.removeMouseListener(canvas);
-         ImageWindowListener iwl = new ImageWindowListener(iPlus_, res, 
-               maxima, parms_);
-         canvas.addMouseListener(iwl);
-      }
-      
+
    }
-   
+
    
    public void preview () {
       

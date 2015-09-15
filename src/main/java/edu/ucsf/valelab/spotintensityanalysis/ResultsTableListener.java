@@ -66,17 +66,19 @@ public class ResultsTableListener implements KeyListener, MouseListener{
    
    @Override
    public void keyPressed(KeyEvent e) {
-      int key = e.getKeyCode();
-      int row = tp_.getSelectionStart();
-      if (key == KeyEvent.VK_J) {
-         if (row > 0) {
-            row--;
-            tp_.setSelection(row, row);
-         }
-      } else if (key == KeyEvent.VK_K) {
-         if  (row < tp_.getLineCount() - 1) {
-            row++;
-            tp_.setSelection(row, row);
+      if (e != null) {
+         int key = e.getKeyCode();
+         int row = tp_.getSelectionStart();
+         if (key == KeyEvent.VK_J) {
+            if (row > 0) {
+               row--;
+               tp_.setSelection(row, row);
+            }
+         } else if (key == KeyEvent.VK_K) {
+            if (row < tp_.getLineCount() - 1) {
+               row++;
+               tp_.setSelection(row, row);
+            }
          }
       }
       update();
@@ -88,7 +90,6 @@ public class ResultsTableListener implements KeyListener, MouseListener{
 
    @Override
    public void mouseReleased(MouseEvent e) {
-     // update();
    }
    @Override
    public void mousePressed(MouseEvent e) {}
@@ -102,41 +103,38 @@ public class ResultsTableListener implements KeyListener, MouseListener{
    public void mouseExited(MouseEvent e) {};
 
    private void update() {
-      if (siPlus_ == null) {
-         return;
-      }
       int row = tp_.getSelectionStart();
+      int x = (int) res_.getValue("x", row);
+      int y = (int) res_.getValue("y", row);
+      
       if (row >= 0 && row < tp_.getLineCount()) {
-         if (siPlus_.getWindow() != null) {
+         if (siPlus_ != null && siPlus_.getWindow() != null) {
             if (siPlus_ != IJ.getImage()) {
                siPlus_.getWindow().toFront();
                win_.toFront();
             }
+            final int diam = 2 * parms_.radius_;
+            Roi roi = new Roi(x - diam, y - diam, 2 * diam, 2 * diam,
+                    2 * diam);
+            roi.setStrokeColor(Color.GREEN);
+            siPlus_.setRoi(roi);
          } else {
             siPlus_ = null;
-            return;
          }
-         final int diam = 2 * parms_.radius_;
-
-         int x = (int) res_.getValue("x", row);
-         int y = (int) res_.getValue("y", row);
-         Roi roi = new Roi(x - diam, y - diam, 2 * diam, 2 * diam, 
-                 2 * diam);
-         roi.setStrokeColor(Color.BLUE);
-         siPlus_.setRoi(roi);
-         
-         XYSeries[] plots = new XYSeries[1];
-         boolean[] showShapes = new boolean[1]; 
-         
-         XYSeries data = new XYSeries("" + x + "," + y, false, false);
-         for (int col = 3; col < res_.getLastColumn(); col++) {
-            data.add(Double.parseDouble(res_.getHeadings()[col]), 
-                    res_.getValueAsDouble(col, row) );
-         }
-         plots[0] = data;
-         pu_.plotDataN("Spot Intensity Profile", plots, "Time (s)",
-           "Intensity", showShapes, "");
-         win_.toFront();
       }
+
+      XYSeries[] plots = new XYSeries[1];
+      boolean[] showShapes = new boolean[1];
+
+      XYSeries data = new XYSeries("" + x + "," + y, false, false);
+      for (int col = 3; col < res_.getLastColumn(); col++) {
+         data.add(Double.parseDouble(res_.getHeadings()[col]),
+                 res_.getValueAsDouble(col, row));
+      }
+      plots[0] = data;
+      pu_.plotDataN("Spot Intensity Profile", plots, "Time (s)",
+              "Intensity", showShapes, "");
+      win_.toFront();
    }
+
 }

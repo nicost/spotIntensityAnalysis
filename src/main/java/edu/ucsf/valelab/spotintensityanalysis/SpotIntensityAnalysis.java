@@ -27,21 +27,32 @@ import ij.gui.GenericDialog;
 import ij.gui.NonBlockingGenericDialog;
 import ij.plugin.PlugIn;
 import java.awt.AWTEvent;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.prefs.Preferences;
 
 public class SpotIntensityAnalysis implements PlugIn, DialogListener {
-   SpotIntensityParameters parms_;
+   private SpotIntensityParameters parms_;
+   private final Preferences myPrefs_;
+   private final String TIMEINTERVAL = "TimeIntervalMs";
+   private final String CHECKFIRSTNFRAMES = "CheckFirstNFrames";
+   private final String SPOTRADIUS = "SpotRadius";
+   private final String NOISETOLERANCE = "NoiseTolerance";
    
-   AtomicBoolean isRunning_ = new AtomicBoolean(false);
+   public SpotIntensityAnalysis() {
+      myPrefs_ = Preferences.systemNodeForPackage(this.getClass());
+   }
    
    @Override
    public void run(String arg) {
       final NonBlockingGenericDialog gd = new NonBlockingGenericDialog( 
               "Spot Intensity Analysis" );
-      gd.addNumericField("Time Interval (s)", 1.0, 3);
-      gd.addNumericField("Check First n Frames", 10, 0);
-      gd.addNumericField("Spot Radius (pixels)", 3, 0);
-      gd.addNumericField("Noise tolerance", 500, 0);
+      gd.addNumericField("Time Interval (s)", 
+              myPrefs_.getDouble(TIMEINTERVAL, 1.0), 3);
+      gd.addNumericField("Check First n Frames", 
+              myPrefs_.getInt(CHECKFIRSTNFRAMES, 10), 0);
+      gd.addNumericField("Spot Radius (pixels)", 
+              myPrefs_.getInt(SPOTRADIUS, 3), 0);
+      gd.addNumericField("Noise tolerance", 
+              myPrefs_.getInt(NOISETOLERANCE, 500), 0);
       
       gd.addPreviewCheckbox(null, "Preview");
       
@@ -73,9 +84,13 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
    private SpotIntensityParameters getParams(GenericDialog gd) {
       SpotIntensityParameters parms = new SpotIntensityParameters();
       parms.intervalS_ = gd.getNextNumber();
+      myPrefs_.putDouble(TIMEINTERVAL, parms.intervalS_);
       parms.nFrames_ = (int) gd.getNextNumber();
+      myPrefs_.putInt(CHECKFIRSTNFRAMES, parms.nFrames_);
       parms.radius_ = (int) gd.getNextNumber();
+      myPrefs_.putInt(SPOTRADIUS, parms.radius_);
       parms.noiseTolerance_ = (int) gd.getNextNumber();
+      myPrefs_.putInt(NOISETOLERANCE, parms.noiseTolerance_);
       
       return parms;
    }

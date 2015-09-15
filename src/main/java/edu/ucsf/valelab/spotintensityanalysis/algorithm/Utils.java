@@ -28,6 +28,9 @@ import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import java.awt.Color;
 import java.awt.Polygon;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -108,6 +111,19 @@ public class Utils {
          }
       }
       return results;
+   }
+   
+   /**
+    * Simple Utility to convert an ImageJ Polygon into a list of x/y points
+    * @param points ImageJ Polygon
+    * @return List of Point2D.Doubles
+    */
+   public static List<Point2D.Double> PolygonToList(Polygon points) {
+      List<Point2D.Double> output = new ArrayList<Point2D.Double>();
+      for (int i = 0; i < points.npoints; i++) {
+         output.add(new Point2D.Double(points.xpoints[i], points.ypoints[i]));
+      }
+      return output;
    }
    
 }
