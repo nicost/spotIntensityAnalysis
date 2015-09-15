@@ -1,3 +1,22 @@
+ ///////////////////////////////////////////////////////////////////////////////
+ //FILE:          ResultsTableListener.java
+ //PROJECT:       SpotIntensityAnalysis
+ //-----------------------------------------------------------------------------
+ //
+ // AUTHOR:       Nico Stuurman
+ //
+ // COPYRIGHT:    University of California, San Francisco 2015
+ //
+ // LICENSE:      This file is distributed under the BSD license.
+ //               License text is included with the source distribution.
+ //
+ //               This file is distributed in the hope that it will be useful,
+ //               but WITHOUT ANY WARRANTY; without even the implied warranty
+ //               of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ //
+ //               IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ //               CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ //               INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES.
 
 package edu.ucsf.valelab.spotintensityanalysis;
 
@@ -97,8 +116,8 @@ public class ResultsTableListener implements KeyListener, MouseListener{
             siPlus_ = null;
             return;
          }
-         int diam = 2 * parms_.radius_;
-        
+         final int diam = 2 * parms_.radius_;
+
          int x = (int) res_.getValue("x", row);
          int y = (int) res_.getValue("y", row);
          Roi roi = new Roi(x - diam, y - diam, 2 * diam, 2 * diam, 

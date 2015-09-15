@@ -37,7 +37,6 @@ import ij.text.TextWindow;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Polygon;
-import java.awt.Window;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
@@ -91,7 +90,6 @@ public class RunAnalysis extends Thread {
       
       ImagePlus backgroundIP = avgIP.duplicate();
       IJ.run(backgroundIP,"Subtract Background...",  "rolling=100 create sliding");
-      // backgroundIP.show();
       
       ImageCalculator iCalc = new ImageCalculator();
       for (int frame = 1; frame <= iPlus_.getNFrames(); frame++) {
@@ -105,14 +103,7 @@ public class RunAnalysis extends Thread {
             res.setValue("" + (frame - 1) * parms_.intervalS_, i , intensity);
          }
       }
-      
-      // ImageProcessor frameProcessor = is.getProcessor(61);
-      // ImagePlus sub = iCalc.run("Subtract create", 
-      //           new ImagePlus("t", frameProcessor), backgroundIP );
-      // sub.show();
-      
-    
-      
+       
       String name = "Spot analysis of " + iPlus_.getShortTitle();
       res.show(name);
       
@@ -136,18 +127,11 @@ public class RunAnalysis extends Thread {
          frame.toFront();
       }
       
- 
-      //ImagePlus sub = iCalc.run("Subtract create", backgroundIP, avgIP);
-      //sub.show();
-         
-      
-      
-      
-      
    }
    
    
    public void preview () {
+      
       // first calculate the mean of the first n images
       final ImageStack is = iPlus_.getImageStack();
       final int width = iPlus_.getWidth();
