@@ -22,6 +22,8 @@
 package edu.ucsf.valelab.spotintensityanalysis;
 
 import edu.ucsf.valelab.spotintensityanalysis.data.SpotIntensityParameters;
+import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.DialogListener;
 import ij.gui.GenericDialog;
 import ij.gui.NonBlockingGenericDialog;
@@ -72,15 +74,19 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
    @Override
    public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
       parms_ = getParams(gd);
-      if (!gd.isPreviewActive()) {
-         ij.IJ.getImage().setOverlay(null);
-      } else {
-          RunAnalysis ra = new RunAnalysis(ij.IJ.getImage(), parms_, gd);
-          ra.preview ();
+      ImagePlus img = WindowManager.getCurrentImage();
+      if (img != null) {
+         if (!gd.isPreviewActive()) {
+            img.setOverlay(null);
+         } else {
+
+            RunAnalysis ra = new RunAnalysis(img, parms_, gd);
+            ra.preview();
+         }
       }
       return true;
    }
-   
+
    private SpotIntensityParameters getParams(GenericDialog gd) {
       SpotIntensityParameters parms = new SpotIntensityParameters();
       parms.intervalS_ = gd.getNextNumber();
