@@ -47,6 +47,7 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
    public void run(String arg) {
       final NonBlockingGenericDialog gd = new NonBlockingGenericDialog( 
               "Spot Intensity Analysis" );
+      gd.addHelp("http://imagej.net/Spot_Intensity_Analysis");
       gd.addNumericField("Time Interval (s)", 
               myPrefs_.getDouble(TIMEINTERVAL, 1.0), 3);
       gd.addNumericField("Check First n Frames", 
