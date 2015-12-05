@@ -84,16 +84,25 @@ public class Utils {
       return ov;
    }
    
+   /**
+    * Sum the intensities around the given pixel in a circle with given radius
+    * @param ip
+    * @param x
+    * @param y
+    * @param radius
+    * @return Summed Intensity
+    */
    public static long GetIntensity(ImageProcessor ip, int x, int y, int radius) {
       long results = 0;
       // use symmetry to avoid too many calculations
-      for (int i = 0; i < radius; i++) {
-         for (int j = 0; j < radius; j++) {
+      for (int i = 0; i <= radius; i++) {
+         for (int j = 0; j <= radius; j++) {
             if (i == 0 && j == 0) {
                results += ip.get(x, y);
             } else {
-               int d = (int) Math.sqrt( (i-radius)*(i-radius) + (j-radius)* (j-radius) );
-               if (d < radius) {
+               double d =  Math.sqrt( (i*i) + (j*j) );
+               if (d <= radius) {
+                  System.out.println("i: " + i + ", j: " + j);
                   if (i == 0) {
                      results += ip.get(x, y + j);
                      results += ip.get(x, y - j);

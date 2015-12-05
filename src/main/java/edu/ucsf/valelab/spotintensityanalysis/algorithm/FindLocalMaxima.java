@@ -170,6 +170,8 @@ public class FindLocalMaxima {
                   }
                }
             }
+            
+            // Check if we are threshold higher than the average of the 4 corners
             if (!stop && (threshold == 0 || 
                     (iProc.getPixel(mi, mj) - 
                       ( (iProc.getPixel(mi - n , mj - n) + iProc.getPixel(mi -n, mj + n) +
