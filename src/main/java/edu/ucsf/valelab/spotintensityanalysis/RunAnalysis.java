@@ -93,6 +93,7 @@ public class RunAnalysis extends Thread {
       
       ImageCalculator iCalc = new ImageCalculator();
       for (int frame = 1; frame <= iPlus_.getNFrames(); frame++) {
+         IJ.showProgress(frame, iPlus_.getNFrames());
          ImageProcessor frameProcessor = is.getProcessor(frame);
          ImagePlus sub = iCalc.run("Subtract create",  
                  new ImagePlus("t", frameProcessor), backgroundIP );

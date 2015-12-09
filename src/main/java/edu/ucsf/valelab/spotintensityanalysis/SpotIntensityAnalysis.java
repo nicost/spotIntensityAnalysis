@@ -80,7 +80,6 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
          if (!gd.isPreviewActive()) {
             img.setOverlay(null);
          } else {
-
             RunAnalysis ra = new RunAnalysis(img, parms_, gd);
             ra.preview();
          }

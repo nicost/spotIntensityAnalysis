@@ -37,6 +37,7 @@ import java.util.List;
  * @author nico
  */
 public class Utils {
+   private static CircleMask circleMask_;
    
    public static ImagePlus Average(ImagePlus inPlus) {
       ImageStack stack = inPlus.getImageStack();
@@ -94,32 +95,32 @@ public class Utils {
     */
    public static long GetIntensity(ImageProcessor ip, int x, int y, int radius) {
       long results = 0;
-      // use symmetry to avoid too many calculations
+      if (circleMask_ == null || circleMask_.getRadius() != radius)
+         circleMask_ = new CircleMask(radius);
+      //circleMask_.print();
+      
+      // use symmetry 
       for (int i = 0; i <= radius; i++) {
          for (int j = 0; j <= radius; j++) {
-            if (i == 0 && j == 0) {
-               results += ip.get(x, y);
-            } else {
-               double d =  Math.sqrt( (i*i) + (j*j) );
-               if (d <= radius) {
-                  System.out.println("i: " + i + ", j: " + j);
-                  if (i == 0) {
-                     results += ip.get(x, y + j);
-                     results += ip.get(x, y - j);
-                  } else if (j==0) {
-                     results += ip.get(x + i, y);
-                     results += ip.get(x - i, y);
-                  } else {
-                     results += ip.get(x - i, y - j);
-                     results += ip.get(x - i, y + j);
-                     results += ip.get(x + i, y - j);
-                     results += ip.get(x + i, y + j);
-                  }
+            if (circleMask_.getMask()[i][j]) {
+               if (i == 0 && j == 0) {
+                  results += ip.get(x, y);
+               } else if (i == 0) {
+                  results += ip.get(x, y + j);
+                  results += ip.get(x, y - j);
+               } else if (j == 0) {
+                  results += ip.get(x + i, y);
+                  results += ip.get(x - i, y);
+               } else {
+                  results += ip.get(x - i, y - j);
+                  results += ip.get(x - i, y + j);
+                  results += ip.get(x + i, y - j);
+                  results += ip.get(x + i, y + j);
                }
             }
          }
       }
-      return results;
+      return results ;
    }
    
    /**
