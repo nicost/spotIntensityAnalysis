@@ -4,7 +4,7 @@
   <groupId>edu.ucsf.valelab.spotanalysis</groupId>
   <artifactId>spotAnalysis_</artifactId>
   <packaging>jar</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
 
   <name>spotIntensityAnalysis</name>
   <url>http://valelab.ucsf.edu/~nico/ijplugins</url>
