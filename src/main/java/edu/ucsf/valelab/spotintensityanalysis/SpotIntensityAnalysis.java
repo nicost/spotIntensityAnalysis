@@ -31,6 +31,7 @@ import ij.plugin.PlugIn;
 import java.awt.AWTEvent;
 import java.util.prefs.Preferences;
 
+
 public class SpotIntensityAnalysis implements PlugIn, DialogListener {
    private SpotIntensityParameters parms_;
    private final Preferences myPrefs_;
