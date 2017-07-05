@@ -36,12 +36,13 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
    private SpotIntensityParameters parms_;
    private final Preferences myPrefs_;
    private final String TIMEINTERVAL = "TimeIntervalMs";
+   private final String ELECTRONSPERADU = "ElectronsPerADU";
    private final String CHECKFIRSTNFRAMES = "CheckFirstNFrames";
    private final String SPOTRADIUS = "SpotRadius";
    private final String NOISETOLERANCE = "NoiseTolerance";
    
    public SpotIntensityAnalysis() {
-      myPrefs_ = Preferences.systemNodeForPackage(this.getClass());
+      myPrefs_ = Preferences.userNodeForPackage(this.getClass());
    }
    
    @Override
@@ -51,6 +52,8 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
       gd.addHelp("http://imagej.net/Spot_Intensity_Analysis");
       gd.addNumericField("Time Interval (s)", 
               myPrefs_.getDouble(TIMEINTERVAL, 1.0), 3);
+      gd.addNumericField("Electrons per ADU",
+              myPrefs_.getDouble(ELECTRONSPERADU, 1.0), 3);
       gd.addNumericField("Check First n Frames", 
               myPrefs_.getInt(CHECKFIRSTNFRAMES, 10), 0);
       gd.addNumericField("Spot Radius (pixels)", 
@@ -92,6 +95,8 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
       SpotIntensityParameters parms = new SpotIntensityParameters();
       parms.intervalS_ = gd.getNextNumber();
       myPrefs_.putDouble(TIMEINTERVAL, parms.intervalS_);
+      parms.ePerADU_ = gd.getNextNumber();
+      myPrefs_.putDouble(ELECTRONSPERADU, parms.ePerADU_);
       parms.nFrames_ = (int) gd.getNextNumber();
       myPrefs_.putInt(CHECKFIRSTNFRAMES, parms.nFrames_);
       parms.radius_ = (int) gd.getNextNumber();

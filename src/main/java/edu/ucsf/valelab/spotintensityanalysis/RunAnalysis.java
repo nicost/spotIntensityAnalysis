@@ -33,6 +33,7 @@ import ij.gui.ImageWindow;
 import ij.gui.Overlay;
 import ij.measure.ResultsTable;
 import ij.plugin.ImageCalculator;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.text.TextPanel;
 import ij.text.TextWindow;
@@ -89,19 +90,19 @@ public class RunAnalysis extends Thread {
     
       
       ImagePlus backgroundIP = avgIP.duplicate();
-      IJ.run(backgroundIP,"Subtract Background...",  "rolling=100 create sliding");
+      IJ.run(backgroundIP,"Gaussian Blur...", "sigma=100");
       
       ImageCalculator iCalc = new ImageCalculator();
       for (int frame = 1; frame <= iPlus_.getNFrames(); frame++) {
          IJ.showProgress(frame, iPlus_.getNFrames());
          ImageProcessor frameProcessor = is.getProcessor(frame);
-         ImagePlus sub = iCalc.run("Subtract create",  
+         ImagePlus sub = iCalc.run("Subtract create 32-bit",  
                  new ImagePlus("t", frameProcessor), backgroundIP );
          for (int i = 0; i < maxima.npoints; i++) {
             int x = maxima.xpoints[i];
             int y = maxima.ypoints[i];
-            long intensity = Utils.GetIntensity(sub.getProcessor(), x, y, parms_.radius_);
-            res.setValue("" + (frame - 1) * parms_.intervalS_, i , intensity);
+            float intensity = Utils.GetIntensity((FloatProcessor) sub.getProcessor(), x, y, parms_.radius_);
+            res.setValue("" + (frame - 1) * parms_.intervalS_, i , intensity * parms_.ePerADU_);
          }
       }
        

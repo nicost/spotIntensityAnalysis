@@ -24,6 +24,7 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.Overlay;
 import ij.gui.Roi;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import java.awt.Color;
@@ -93,8 +94,8 @@ public class Utils {
     * @param radius
     * @return Summed Intensity
     */
-   public static long GetIntensity(ImageProcessor ip, int x, int y, int radius) {
-      long results = 0;
+   public static float GetIntensity(FloatProcessor ip, int x, int y, int radius) {
+      float results = 0.0f;
       if (circleMask_ == null || circleMask_.getRadius() != radius)
          circleMask_ = new CircleMask(radius);
       //circleMask_.print();
@@ -104,18 +105,18 @@ public class Utils {
          for (int j = 0; j <= radius; j++) {
             if (circleMask_.getMask()[i][j]) {
                if (i == 0 && j == 0) {
-                  results += ip.get(x, y);
+                  results += ip.getf(x, y);
                } else if (i == 0) {
-                  results += ip.get(x, y + j);
-                  results += ip.get(x, y - j);
+                  results += ip.getf(x, y + j);
+                  results += ip.getf(x, y - j);
                } else if (j == 0) {
-                  results += ip.get(x + i, y);
-                  results += ip.get(x - i, y);
+                  results += ip.getf(x + i, y);
+                  results += ip.getf(x - i, y);
                } else {
-                  results += ip.get(x - i, y - j);
-                  results += ip.get(x - i, y + j);
-                  results += ip.get(x + i, y - j);
-                  results += ip.get(x + i, y + j);
+                  results += ip.getf(x - i, y - j);
+                  results += ip.getf(x - i, y + j);
+                  results += ip.getf(x + i, y - j);
+                  results += ip.getf(x + i, y + j);
                }
             }
          }
