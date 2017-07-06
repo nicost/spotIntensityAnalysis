@@ -31,5 +31,6 @@ public class SpotIntensityParameters {
    public int nFrames_;
    public int noiseTolerance_;
    public int radius_;
+   public String backgroundMethod_;
    
 }

@@ -90,7 +90,11 @@ public class RunAnalysis extends Thread {
     
       
       ImagePlus backgroundIP = avgIP.duplicate();
-      IJ.run(backgroundIP,"Gaussian Blur...", "sigma=100");
+      if (parms_.backgroundMethod_.equals(SpotIntensityAnalysis.GAUSSIAN100)) {
+         IJ.run(backgroundIP,"Gaussian Blur...", "sigma=100");
+      } else if (parms_.backgroundMethod_.equals(SpotIntensityAnalysis.MEDIAN40)) {
+         IJ.run(backgroundIP, "Median...", "radius=40");
+      }
       
       ImageCalculator iCalc = new ImageCalculator();
       for (int frame = 1; frame <= iPlus_.getNFrames(); frame++) {

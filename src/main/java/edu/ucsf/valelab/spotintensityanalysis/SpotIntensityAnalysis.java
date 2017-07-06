@@ -33,6 +33,10 @@ import java.util.prefs.Preferences;
 
 
 public class SpotIntensityAnalysis implements PlugIn, DialogListener {
+   
+   public static final String GAUSSIAN100 = "Gaussian-100";
+   public final static String MEDIAN40 = "Median-40";
+   
    private SpotIntensityParameters parms_;
    private final Preferences myPrefs_;
    private final String TIMEINTERVAL = "TimeIntervalMs";
@@ -40,6 +44,8 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
    private final String CHECKFIRSTNFRAMES = "CheckFirstNFrames";
    private final String SPOTRADIUS = "SpotRadius";
    private final String NOISETOLERANCE = "NoiseTolerance";
+   private final String[] BACKGROUNDESTIMATIONMETHODS = {GAUSSIAN100, MEDIAN40};
+   private final String BGMETHODKEY = "BgrMethodKey";
    
    public SpotIntensityAnalysis() {
       myPrefs_ = Preferences.userNodeForPackage(this.getClass());
@@ -60,6 +66,9 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
               myPrefs_.getInt(SPOTRADIUS, 3), 0);
       gd.addNumericField("Noise tolerance", 
               myPrefs_.getInt(NOISETOLERANCE, 500), 0);
+      gd.addChoice("Background estimation", BACKGROUNDESTIMATIONMETHODS, 
+              myPrefs_.get(BGMETHODKEY, GAUSSIAN100));
+      
       
       gd.addPreviewCheckbox(null, "Preview");
       
@@ -103,6 +112,8 @@ public class SpotIntensityAnalysis implements PlugIn, DialogListener {
       myPrefs_.putInt(SPOTRADIUS, parms.radius_);
       parms.noiseTolerance_ = (int) gd.getNextNumber();
       myPrefs_.putInt(NOISETOLERANCE, parms.noiseTolerance_);
+      parms.backgroundMethod_ = gd.getNextChoice();
+      myPrefs_.put(BGMETHODKEY, MEDIAN40);
       
       return parms;
    }
