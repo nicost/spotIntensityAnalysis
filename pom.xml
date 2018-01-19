@@ -4,7 +4,7 @@
   <groupId>edu.ucsf.valelab.spotanalysis</groupId>
   <artifactId>spotAnalysis_</artifactId>
   <packaging>jar</packaging>
-  <version>0.11</version>
+  <version>0.3</version>
   <name>spotIntensityAnalysis</name>
   <inceptionYear>2015</inceptionYear>
   <organization>
