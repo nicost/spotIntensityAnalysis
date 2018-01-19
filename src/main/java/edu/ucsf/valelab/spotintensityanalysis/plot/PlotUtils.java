@@ -83,8 +83,8 @@ public class PlotUtils {
          Dimension windowSize = new Dimension();
          windowSize.width = prefs_.getInt(WINDOWWIDTH, 300);
          windowSize.height = prefs_.getInt(WINDOWHEIGHT, 400);
-         setLocation(screenLoc.x, screenLoc.y);
-         setSize(windowSize);
+         super.setLocation(screenLoc.x, screenLoc.y);
+         super.setSize(windowSize);
       }
 
       @Override
@@ -152,7 +152,7 @@ public class PlotUtils {
       plot.setRangeGridlinePaint(Color.lightGray);
 
       XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-      renderer.setBaseShapesVisible(true);
+      renderer.setDefaultShapesVisible(true);
 
       for (int i = 0; i < data.length; i++) {
          renderer.setSeriesFillPaint(i, Color.white);

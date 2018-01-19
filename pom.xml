@@ -4,28 +4,64 @@
   <groupId>edu.ucsf.valelab.spotanalysis</groupId>
   <artifactId>spotAnalysis_</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
-
+  <version>0.11</version>
   <name>spotIntensityAnalysis</name>
+  <inceptionYear>2015</inceptionYear>
+  <organization>
+      <name>Vale laboratory, University of California, San Francisco, and Howard Hughes Medical Institute
+      </name>
+      <url>https://valelab.ucsf.edu</url>
+  </organization>
+  <licenses>
+      <license>
+          <name>BSD 2-clause</name>
+          <url>https://opensource.org/licenses/bsd-license.php</url>
+      </license>
+  </licenses>
+  <developers>
+      <developer>
+          <name>Nico Stuurman</name>
+      </developer>
+  </developers>
+  <contributors>
+      <contributor>
+          <name>Ankur Jain</name>
+      </contributor>
+  </contributors> 
+  <mailingLists>
+      <mailingList>
+          <name>None</name>
+      </mailingList>
+  </mailingLists>  
+  <scm>
+      <url>https://github.com/nicost/spotIntensityAnalysis/</url>
+  </scm>
+  <issueManagement>
+      <url>https://github.com/nicost/spotIntensityAnalysis/issues</url>
+  </issueManagement>
+  <ciManagement><url>none</url></ciManagement>
+  
   <url>http://valelab.ucsf.edu/~nico/ijplugins</url>
   <description>An ImageJ/Fiji plugin to analyze intensities of single molecule spots in time-lapse series</description>
   <properties>
      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     <license.licenseName>BSD 2-clause</license.licenseName>
+     <license.copyrightOwners>Regents of the Univeristy of California</license.copyrightOwners>
   </properties>
 
-	<repositories>
-		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
-		</repository>
-	</repositories>
+  <repositories>
+      <repository>
+          <id>imagej.public</id>
+          <url>http://maven.imagej.net/content/groups/public</url>
+      </repository>
+  </repositories>
 
-	<parent>
-		<groupId>net.imagej</groupId>
-		<artifactId>pom-imagej</artifactId>
-		<version>9.2.0</version>
-		<relativePath />
-	</parent>
+  <parent>
+      <groupId>org.scijava</groupId>
+      <artifactId>pom-scijava</artifactId>
+      <version>19.0.0</version>
+      <relativePath />
+  </parent>
 
   <build>
      <plugins>
@@ -44,28 +80,28 @@
   </build>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-     <dependency>
-         <groupId>org.apache.commons</groupId>
-         <artifactId>commons-math3</artifactId>
-         <version>3.5</version>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.jfree</groupId>
-         <artifactId>jfreechart</artifactId>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-math3</artifactId>
+          <version>3.5</version>
       </dependency>
       <dependency>
-         <groupId>org.jfree</groupId>
-         <artifactId>jcommon</artifactId>
+          <groupId>org.jfree</groupId>
+          <artifactId>jfreechart</artifactId>
       </dependency>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>imagej</artifactId>
+      <dependency>
+          <groupId>net.imagej</groupId>
+          <artifactId>imagej</artifactId>
       </dependency>
-      
+      <dependency>
+          <groupId>net.imagej</groupId>
+          <artifactId>ij</artifactId>
+      </dependency>
   </dependencies>
+  
 </project>
