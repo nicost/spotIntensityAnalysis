@@ -26,9 +26,11 @@ package edu.ucsf.valelab.spotintensityanalysis.data;
  * @author nico
  */
 public class SpotIntensityParameters {
+   public double ePerADU_;
    public double intervalS_;
    public int nFrames_;
    public int noiseTolerance_;
    public int radius_;
+   public String backgroundMethod_;
    
 }
